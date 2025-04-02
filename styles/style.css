@@ -1,0 +1,133 @@
+/* Target the white strip at the top */
+@media screen and (max-width: 768px) {
+    /* Existing mobile styles... */
+    
+    /* Direct targeting of the white strip */
+    .app-header,
+    .header-container,
+    .top-header,
+    .header-bar,
+    .top-bar,
+    .title-bar,
+    .app-title-bar,
+    .merlin-header,
+    .dyson-header,
+    .ai-header,
+    .white-strip,
+    .header-strip,
+    .top-strip,
+    .app-container > div:first-child,
+    .main-container > div:first-child,
+    .content-container > div:first-child,
+    body > div:first-child:not(.sidebar-nav),
+    #root > div:first-child,
+    #app > div:first-child,
+    .chat-header,
+    .page-header,
+    .section-header,
+    .banner,
+    .top-banner,
+    .header-banner,
+    .app-banner,
+    .white-banner,
+    .white-section,
+    .white-container,
+    .white-header,
+    .white-top,
+    .white-bar,
+    .white-strip,
+    [style*="background-color: white"],
+    [style*="background-color: #fff"],
+    [style*="background-color:#fff"],
+    [style*="background: white"],
+    [style*="background: #fff"],
+    [style*="background:#fff"],
+    [class*="white-"],
+    [class*="-white"],
+    [id*="white-"],
+    [id*="-white"],
+    .chat-container > div:first-child,
+    .message-container > div:first-child,
+    .app-view > div:first-child,
+    .app-screen > div:first-child,
+    .app-page > div:first-child,
+    .main-view > div:first-child,
+    .main-screen > div:first-child,
+    .main-page > div:first-child,
+    .content-view > div:first-child,
+    .content-screen > div:first-child,
+    .content-page > div:first-child,
+    .chat-view > div:first-child,
+    .chat-screen > div:first-child,
+    .chat-page > div:first-child,
+    .message-view > div:first-child,
+    .message-screen > div:first-child,
+    .message-page > div:first-child {
+        display: none !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        max-height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        background: #000000 !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
+        z-index: -9999 !important;
+    }
+    
+    /* Force black background on all parent elements */
+    html, 
+    body, 
+    .app-container, 
+    .main-container, 
+    .content-container,
+    #root,
+    #app,
+    .app,
+    .root,
+    .main,
+    .content,
+    .page,
+    .view,
+    .screen,
+    .app-view,
+    .app-screen,
+    .app-page,
+    .main-view,
+    .main-screen,
+    .main-page,
+    .content-view,
+    .content-screen,
+    .content-page {
+        background-color: #000000 !important;
+        background: #000000 !important;
+        color: #ffffff !important;
+    }
+    
+    /* Ensure the main content has black background */
+    .main-content,
+    .content-area,
+    .app-content,
+    .content-container,
+    main,
+    [role="main"],
+    .chat-container,
+    .message-container {
+        background-color: #000000 !important;
+        background: #000000 !important;
+        color: #ffffff !important;
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+        top: 0 !important;
+    }
+    
+    /* Target any element with white background */
+    *[style*="background"] {
+        background-color: #000000 !important;
+        background: #000000 !important;
+    }
+} 
