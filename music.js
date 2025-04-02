@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentInterface = null;
 
     // API Configuration
-    const API_KEY = "sk-uxfCDkGocezOOGqnKHxCAuOoGBhRQaiHel13e30MY0DiRurO";
+    const API_KEY = "";
     const API_ENDPOINT = "https://api.suno.ai/v1/music";
     const REFERENCE_AUDIO = '';
 
