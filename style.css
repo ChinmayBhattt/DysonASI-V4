@@ -444,16 +444,97 @@ body {
 /* Fix Messages Container */
 .messages-container {
     flex: 1;
-    margin-bottom: 120px;
-    padding: 20px;
+    overflow-y: auto;
+    padding: 24px;
     display: flex;
     flex-direction: column;
     gap: 24px;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.message {
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 100%;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    animation: messageSlideIn 0.3s ease-out;
     position: relative;
-    z-index: 1;
-    overflow-y: auto;
-    min-height: calc(100vh - 200px);
-    scroll-behavior: smooth;
+}
+
+.user-message {
+    background: var(--glass-bg);
+    color: var(--text-primary);
+    align-self: flex-end;
+    margin-left: 64px;
+}
+
+.ai-message {
+    background: var(--bg-sidebar);
+    color: var(--text-primary);
+    align-self: flex-start;
+    margin-right: 64px;
+    border: 1px solid var(--glass-border);
+}
+
+.message p {
+    margin: 0 0 12px 0;
+}
+
+.message p:last-child {
+    margin-bottom: 0;
+}
+
+.message pre {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 12px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 12px 0;
+}
+
+.message code {
+    font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    padding: 2px 4px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.message pre code {
+    background: transparent;
+    padding: 0;
+}
+
+.message ul, .message ol {
+    margin: 12px 0;
+    padding-left: 24px;
+}
+
+.message li {
+    margin: 6px 0;
+}
+
+@media screen and (max-width: 768px) {
+    .messages-container {
+        padding: 16px;
+    }
+    
+    .message {
+        padding: 12px 16px;
+    }
+    
+    .user-message {
+        margin-left: 32px;
+    }
+    
+    .ai-message {
+        margin-right: 32px;
+    }
 }
 
 /* Input Area Styles */
@@ -2114,35 +2195,39 @@ body.light-mode .electro.active {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 8px 12px;
-    color: var(--text-primary);
+    padding: 12px 16px;
+    color: var(--text-secondary);
     text-decoration: none;
-    border-radius: 8px;
-    transition: background-color 0.2s;
+    border-radius: 12px;
+    transition: var(--transition-bounce);
 }
 
 #music-link:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--glass-bg);
+    color: var(--text-primary);
+    transform: translateX(4px);
 }
 
 #music-link.active {
-    background: rgba(255, 255, 255, 0.1);
-    outline: 2px solid var(--border-color);
-    outline-offset: -2px;
+    background: var(--gradient-primary);
+    color: white;
+    box-shadow: var(--shadow-glow);
+    transform: translateX(4px);
 }
 
 /* Light mode AI Music navigation item */
 body.light-mode #music-link {
-    color: #1b254b;
+    color: var(--text-secondary);
 }
 
 body.light-mode #music-link:hover {
-    background: rgba(0, 0, 0, 0.05);
+    background: var(--glass-bg);
+    color: var(--text-primary);
 }
 
 body.light-mode #music-link.active {
-    background: rgba(0, 0, 0, 0.05);
-    outline: 2px solid #e2e8f0;
+    background: var(--gradient-primary);
+    color: white;
 }
 
 /* Mobile Navigation Styles */
@@ -2569,5 +2654,194 @@ body.light-mode .nav-item.active {
         font-size: 10px;
         padding: 6px 10px;
     }
+}
+
+.code-block-container {
+    background: #1a1b26;
+    border-radius: 6px;
+    margin: 16px 0;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.code-block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #1f2335;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.code-language {
+    color: #565f89;
+    font-size: 12px;
+    font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+    text-transform: lowercase;
+}
+
+.code-actions {
+    display: flex;
+    gap: 8px;
+    position: absolute;
+    right: 12px;
+    top: 8px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.code-block-container:hover .code-actions {
+    opacity: 1;
+}
+
+.code-action-button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #a9b1d6;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.code-action-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.code-block-content {
+    padding: 16px;
+    overflow-x: auto;
+    position: relative;
+    background: #1a1b26;
+}
+
+/* Syntax highlighting colors - Vibrant Style */
+.token.keyword { color: #ff4444; }     /* Bright red for keywords like include, int, return */
+.token.function { color: #00ff99; }    /* Bright green for functions */
+.token.string { color: #3498db; }      /* Bright blue for strings */
+.token.number { color: #ff6b6b; }      /* Red for numbers */
+.token.boolean { color: #ff4444; }     /* Red for true/false */
+.token.operator { color: #3498db; }    /* Blue for operators like +, -, = */
+.token.punctuation { color: #3498db; } /* Blue for brackets, semicolons */
+.token.comment { color: #2ecc71; }     /* Green for comments */
+.token.class-name { color: #2ecc71; }  /* Green for class names */
+.token.builtin { color: #ff4444; }     /* Red for built-in functions */
+.token.namespace { color: #3498db; }   /* Blue for namespaces like std */
+.token.property { color: #2ecc71; }    /* Green for properties */
+.token.variable { color: #3498db; }    /* Blue for variables */
+.token.parameter { color: #ff4444; }   /* Red for parameters */
+.token.constant { color: #2ecc71; }    /* Green for constants */
+.token.type { color: #ff4444; }        /* Red for types like vector, int */
+
+/* Code block styling */
+.code-block-content {
+    padding: 16px;
+    overflow-x: auto;
+    position: relative;
+    background: #1a1b26;
+    font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.code-block-content pre {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+}
+
+.code-block-content code {
+    display: block;
+    color: #ffffff;  /* Brighter default text color */
+}
+
+/* Make line numbers more visible */
+.code-block-content code > span::before {
+    color: #666666;  /* Brighter line numbers */
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Line numbers */
+.code-block-content code > span {
+    display: block;
+    position: relative;
+    padding-left: 3.8em;
+    min-height: 1.5em;
+}
+
+.code-block-content code > span::before {
+    counter-increment: line;
+    content: counter(line);
+    position: absolute;
+    left: 0;
+    width: 3em;
+    text-align: right;
+    color: #6e7681;
+    padding-right: 1em;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    user-select: none;
+}
+
+/* Code block container */
+.code-block-container {
+    background: #1a1b26;
+    border-radius: 8px;
+    margin: 16px 0;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Code block header */
+.code-block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #1f2335;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Language indicator */
+.code-language {
+    color: #7a7f8c;
+    font-size: 12px;
+    font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+}
+
+/* Copy and Edit buttons */
+.code-actions {
+    display: flex;
+    gap: 8px;
+    opacity: 1;  /* Always visible now */
+    position: static;  /* Not absolute anymore */
+}
+
+.code-action-button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #a9b1d6;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.code-action-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
 }
 

@@ -230,8 +230,10 @@ function initializeChat() {
     };
 
     function formatResponse(responseText) {
-        // Convert markdown-style formatting to HTML
         let formattedLines = [];
+        let inCodeBlock = false;
+        let codeLanguage = '';
+        let codeContent = [];
         let inList = false;
         let listType = 'ul';
 
@@ -239,7 +241,48 @@ function initializeChat() {
             line = line.trim();
             if (!line) return;
 
-            // Handle lists2
+            // Handle code blocks
+            if (line.startsWith('```')) {
+                if (!inCodeBlock) {
+                    // Start of code block
+                    inCodeBlock = true;
+                    codeLanguage = line.slice(3).trim() || 'plaintext';
+                    codeContent = [];
+                } else {
+                    // End of code block
+                    inCodeBlock = false;
+                    const codeBlockId = 'code-' + Math.random().toString(36).substr(2, 9);
+                    formattedLines.push(`
+                        <div class="code-block-container">
+                            <div class="code-block-header">
+                                <span class="code-language">${codeLanguage}</span>
+                                <div class="code-actions">
+                                    <button class="code-action-button" onclick="copyCode('${codeBlockId}')">
+                                        <i class="fas fa-copy"></i> Copy
+                                    </button>
+                                    <button class="code-action-button" onclick="editCode('${codeBlockId}')">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-block-content" id="${codeBlockId}">
+                                <pre><code class="language-${codeLanguage}">${escapeHtml(codeContent.join('\n'))}</code></pre>
+                            </div>
+                        </div>
+                    `);
+                }
+                return;
+            }
+
+            if (inCodeBlock) {
+                codeContent.push(line);
+                return;
+            }
+
+            // Convert bold text (**text**) to <strong> tags
+            line = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+            // Handle lists
             if (line.startsWith('- ') || line.startsWith('*')) {
                 if (!inList) {
                     formattedLines.push('<ul>');
@@ -269,6 +312,58 @@ function initializeChat() {
 
         return formattedLines.join('\n');
     }
+
+    // Helper function to escape HTML
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Copy code function
+    window.copyCode = function(codeBlockId) {
+        const codeBlock = document.getElementById(codeBlockId);
+        const code = codeBlock.querySelector('code').textContent;
+        navigator.clipboard.writeText(code).then(() => {
+            const button = codeBlock.parentElement.querySelector('.code-action-button');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            setTimeout(() => {
+                button.innerHTML = originalText;
+            }, 2000);
+        });
+    };
+
+    // Edit code function
+    window.editCode = function(codeBlockId) {
+        const codeBlock = document.getElementById(codeBlockId);
+        const code = codeBlock.querySelector('code').textContent;
+        const textarea = document.createElement('textarea');
+        textarea.className = 'code-editor-textarea';
+        textarea.value = code;
+        
+        // Replace code block with textarea
+        const originalContent = codeBlock.innerHTML;
+        codeBlock.innerHTML = '';
+        codeBlock.appendChild(textarea);
+        
+        // Add save button
+        const saveButton = document.createElement('button');
+        saveButton.className = 'code-action-button';
+        saveButton.innerHTML = '<i class="fas fa-save"></i> Save';
+        saveButton.onclick = () => {
+            const newCode = textarea.value;
+            codeBlock.innerHTML = originalContent;
+            codeBlock.querySelector('code').textContent = newCode;
+            // Re-apply syntax highlighting
+            if (window.Prism) {
+                Prism.highlightElement(codeBlock.querySelector('code'));
+            }
+        };
+        
+        const header = codeBlock.parentElement.querySelector('.code-block-header .code-actions');
+        header.appendChild(saveButton);
+    };
 
     // Start new thread if no chat exists
     if (window.currentChatIndex === -1) {
